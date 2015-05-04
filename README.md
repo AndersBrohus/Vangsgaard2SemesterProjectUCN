@@ -1,5 +1,5 @@
 # 2. Semester Projekt UCN - Vangsgaard
 
-![Happy shark](http://media.giphy.com/media/hpCNJ55ww3sJ2/giphy.gif)
+![Happy shark](http://i.imgur.com/qdyvNyN.gif)
 
 Af Anders Brohus, Mauran Muthiah & Mike Pryssing
