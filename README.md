@@ -1,1 +1,3 @@
-# Vangsgaard 2. Semester Projekt UCN
+# 2. Semester Projekt UCN - Vangsgaard
+
+Af Anders Brohus, Mauran Muthiah & Mike Pryssing
