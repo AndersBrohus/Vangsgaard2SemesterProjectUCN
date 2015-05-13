@@ -6,10 +6,15 @@ public class customer {
 	private String Address;
 	private int phone;
 	private String email;
-	private customerType customerType;
+	private int customerType;
+	
+	public customer()
+	{
+		
+	}
 	
 	public customer(int id, String name, String address, int phone,
-			String email, Mdl.customerType customerType) {
+			String email, int customerType) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -92,14 +97,14 @@ public class customer {
 	/**
 	 * @return the customerType
 	 */
-	public customerType getCustomerType() {
+	public int getCustomerType() {
 		return customerType;
 	}
 
 	/**
 	 * @param customerType the customerType to set
 	 */
-	public void setCustomerType(customerType customerType) {
+	public void setCustomerType(int customerType) {
 		this.customerType = customerType;
 	}
 	

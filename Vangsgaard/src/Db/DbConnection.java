@@ -19,11 +19,11 @@ public class DbConnection
 	private static final String  driver = "jdbc:sqlserver://kraka.ucn.dk:1433";
 	//private static final String  driver = "jdbc:sqlserver://BROHUS-MAC\\BROHUSSQL";
 	//  private static final String  driver = "jdbc:sqlserver://localhost:1433";
-   private static final String  databaseName = ";databaseName=Company";
+   private static final String  databaseName = ";databaseName=dmaa0914_2Sem_3";
     //SQL Server
-    private static String  userName = ";user=company";
+    private static String  userName = ";user=dmaa0914_2Sem_3";
     //private static String  userName = "; user=company";
-    private static String password = ";password=company";
+    private static String password = ";password=IsAllowed";
    
   
     private DatabaseMetaData dma;
@@ -93,7 +93,8 @@ public class DbConnection
         return instance;
     }
     public static void startTransaction()
-    { try{
+    {
+    	try{
         con.setAutoCommit(false);
         }
       catch(Exception e){

@@ -12,6 +12,9 @@ public class customerType {
 		this.discount = discount;
 	}
 	
+	public customerType() {
+	}
+
 	/**
 	 * @return the id
 	 */
