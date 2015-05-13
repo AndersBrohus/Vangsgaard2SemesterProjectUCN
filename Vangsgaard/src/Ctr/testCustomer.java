@@ -16,7 +16,7 @@ public class testCustomer {
 		{
 			try
 			{
-				ctrCus.insertNew("Mike", "Vesterbro", 88888888, "Mike@Mike.dk", 1);
+				ctrCus.insertNew("dsafsfs", "Vesterbro", 88888888, "Mike@Mike.dk", 1);
 				String PrintTest = "ID - " + ctrCus.getLatest().getId() + " -- Phone - " + ctrCus.getLatest().getPhone();
 				System.out.println(PrintTest);
 			}
