@@ -9,7 +9,7 @@ public class CtrCustomer {
     public CtrCustomer() {
         
     }
-    public ArrayList<customer> findAllEmployee()
+    public ArrayList<customer> findAllCustomers()
     {
       IFDBcustomer dbCus= new DBcustomer();
       ArrayList<customer> allCus = new ArrayList<customer>();
@@ -26,24 +26,24 @@ public class CtrCustomer {
          IFDBcustomer dbCus= new DBcustomer();
         return dbCus.findCustomerPhone(phone);
     }
-      public customer getLatest()
+    public customer getLatest()
     {
           IFDBcustomer dbCus= new DBcustomer();
         return dbCus.getLatest();
     }
-     /* public int updateEmp(String fname, String lname, String ssn, double salary, String superssn)
-      {
-          IFDBcustomer dbCus= new DBcustomer();
-          customer cusObj = new customer();
-          emp.setSsn(ssn);
-          emp.setFname(fname);
-          emp.setLname(lname);
-          emp.setSupervisor(new Employee(superssn));
-          emp.setSalary(salary);
-          return  dbEmp.updateEmployee(emp);
-          
-          
-      }*/
+	  public int updateCustomer(int oldPhone,String name, String address, int newPhone, String email,int ct)
+	  {
+	      IFDBcustomer dbCus= new DBcustomer();
+	      customer cus = dbCus.findCustomerPhone(oldPhone);
+	      customer cusObj = new customer();
+	      cusObj.setId(cus.getId());
+	      cusObj.setName(name);
+	      cusObj.setAddress(address);
+	      cusObj.setPhone(newPhone);
+	      cusObj.setEmail(email);
+	      cusObj.setCustomerType(ct);
+	      return  dbCus.updateCustomer(cusObj);
+	  }
       
       public void insertNew(String name, String address, int phone, String email,int ct) throws Exception
       {    

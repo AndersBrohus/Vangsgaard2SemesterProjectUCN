@@ -9,6 +9,10 @@ public class department {
 		this.departmentName = departmentName;
 	}
 
+	public department() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * @return the id
 	 */

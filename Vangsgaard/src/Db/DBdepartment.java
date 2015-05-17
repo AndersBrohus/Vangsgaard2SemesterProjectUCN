@@ -8,21 +8,21 @@ import java.util.ArrayList;
 
 import Mdl.*;
 
-public class DBcustomer implements IFDBcustomer {
+public class DBdepartment implements IFDBdepartment{
 	private  Connection con;
     /** Creates a new instance of DBZipCodes */
-    public DBcustomer() {
+    public DBdepartment() {
       con = DbConnection.getInstance().getDBcon();
     }
 	
-    public ArrayList<customer> getAllCustomers()
+    public ArrayList<department> getAllDepartments()
     {
         return miscWhere("");
     }
     
 	private String buildQuery(String wClause)
 	{
-	    String query="SELECT * FROM customer";
+	    String query="SELECT * FROM department";
 		
 		if (wClause.length()>0)
 			query=query+" WHERE "+ wClause;
@@ -30,10 +30,10 @@ public class DBcustomer implements IFDBcustomer {
 		return query;
 	}
 	
-	private ArrayList<customer> miscWhere(String wClause)
+	private ArrayList<department> miscWhere(String wClause)
 	{
         ResultSet results;
-	    ArrayList<customer> list = new ArrayList<customer>();	
+	    ArrayList<department> list = new ArrayList<department>();	
 		
 	    String query =  buildQuery(wClause);
   
@@ -44,9 +44,9 @@ public class DBcustomer implements IFDBcustomer {
 	 	
 	
 		while( results.next() ){
-			customer cusObj = new customer();
-			cusObj = buildCustomer(results);	
-            list.add(cusObj);	
+			department dpartObj = new department();
+			dpartObj = buildDepartment(results);	
+            list.add(dpartObj);	
 		}//end while
                  stmt.close();     			
 		}//slut try	
@@ -57,29 +57,25 @@ public class DBcustomer implements IFDBcustomer {
 		return list;
 	}
 	
-	private customer buildCustomer(ResultSet results)
+	private department buildDepartment(ResultSet results)
     {  
-		customer cusObj = new customer();
+		department dpartObj = new department();
         try
         { // the columns from the table ZipCode  are used
-        	cusObj.setId(results.getInt("id"));
-        	cusObj.setName(results.getString("name"));
-        	cusObj.setAddress(results.getString("address"));
-        	cusObj.setPhone(results.getInt("phone"));
-        	cusObj.setEmail(results.getString("email"));
-        	cusObj.setCustomerType(results.getInt("customerType"));
+        	dpartObj.setId(results.getInt("id"));
+        	dpartObj.setDepartmentName(results.getString(("departmentName")));
         }
         catch(Exception e)
         {
-        	System.out.println("error in building the product object");
+        	System.out.println("error in building the Department object");
         }
-        return cusObj;
+        return dpartObj;
     }
 	    
-	private customer singleWhere(String wClause)
+	private department singleWhere(String wClause)
 	{
 		ResultSet results;
-		customer cusObj = new customer();
+		department dpartObj = new department();
                 
 	    String query = buildQuery(wClause);
         //System.out.println(query);
@@ -92,31 +88,27 @@ public class DBcustomer implements IFDBcustomer {
 	 		
 	 		if( results.next() )
 	 		{
-	 			cusObj = buildCustomer(results);
+	 			dpartObj = buildDepartment(results);
 	            
 	            stmt.close();
 			}
             else
             { 	//no employee was found
-            	cusObj = null;
+            	dpartObj = null;
             }
 		}//end try	
 	 	catch(Exception e)
 		{
 	 		System.out.println("Query exception: "+e);
 	 	}
-		return cusObj;
+		return dpartObj;
 	}
 	
 	@Override
-    public customer insertCustomer(customer cus) throws Exception
+    public department insertDepartment(department dpart) throws Exception
     {
-		 String query="INSERT INTO customer(name, address, phone,email,customerType)  VALUES('"+
-				 cus.getName() + "','" +
-				 cus.getAddress() + "'," +
-				 cus.getPhone() + ",'" +
-				 cus.getEmail() + "'," +
-				 cus.getCustomerType()
+		 String query="INSERT INTO department (departmentName)  VALUES('"+
+				 dpart.getDepartmentName() + "'"
 				 + ")";
        //System.out.println("insert : " + query);
       try{ // insert new employee +  dependent
@@ -126,36 +118,26 @@ public class DBcustomer implements IFDBcustomer {
           stmt.close();
       }//end try
        catch(SQLException ex){
-          System.out.println("Customer ikke oprettet");
-          throw new Exception ("Customer is not inserted correct");
+          System.out.println("customerType ikke oprettet");
+          throw new Exception ("customerType is not inserted correct");
        }
-      customer cusObj = getLatest();
-      return cusObj;
+      department dpartObj = getLatest();
+      return dpartObj;
     }
 	
-	public customer getCustomer(int id)
+	public department getDepartment(int id)
     {   String wClause = "  id = " + id;
         return singleWhere(wClause);
     }
 	
-	public customer findCustomerPhone(int phone)
-    {   String wClause = "  phone = " + phone;
-        return singleWhere(wClause);
-    }
-	
-	public int updateCustomer(customer cus)
+	public int updateDepartment(department dpart)
 	{
-		customer cusObj  = cus;
+		department dpartObj  = dpart;
 		int rc=-1;
 
-		String query="UPDATE customer SET "+
-		 	  "name ='"+ cusObj.getName()+"', "+
-		 	  "address ='"+ cusObj.getAddress() + "', " +
-                          "phone ="+ cusObj.getPhone() + ", " +
-                          "email ='"+ cusObj.getEmail() + "', " +
-                          "customerType ="+ cusObj.getCustomerType() + " " +
-		          " WHERE id = "+ cusObj.getId();
-                System.out.println("Update query:" + query);
+		String query="UPDATE department SET "+
+		 	  "departmentName ='"+ dpartObj.getDepartmentName()+"'"+
+		          " WHERE id = "+ dpartObj.getId();
   		try{ // update employee
 	 		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);
@@ -169,12 +151,12 @@ public class DBcustomer implements IFDBcustomer {
 		return(rc);
 	}
 	
-	public customer getLatest()
+	public department getLatest()
 	{
 		ResultSet results;
-		customer cusObj = new customer();
+		department dpart = new department();
                 
-	    String query = "SELECT TOP 1 * FROM customer ORDER BY id DESC;";
+	    String query = "SELECT TOP 1 * FROM department ORDER BY id DESC;";
         //System.out.println(query);
         
 		try
@@ -185,20 +167,19 @@ public class DBcustomer implements IFDBcustomer {
 	 		
 	 		if( results.next() )
 	 		{
-	 			cusObj = buildCustomer(results);
+	 			dpart = buildDepartment(results);
 	            
 	            stmt.close();
 			}
             else
             { 	//no employee was found
-            	cusObj = null;
+            	dpart = null;
             }
 		}//end try	
 	 	catch(Exception e)
 		{
 	 		System.out.println("Query exception: "+e);
 	 	}
-		return cusObj;
+		return dpart;
 	}
-	
 }

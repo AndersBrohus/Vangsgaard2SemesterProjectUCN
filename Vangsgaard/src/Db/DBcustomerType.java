@@ -8,21 +8,21 @@ import java.util.ArrayList;
 
 import Mdl.*;
 
-public class DBcustomer implements IFDBcustomer {
+public class DBcustomerType implements IFDBcustomerType {
 	private  Connection con;
     /** Creates a new instance of DBZipCodes */
-    public DBcustomer() {
+    public DBcustomerType() {
       con = DbConnection.getInstance().getDBcon();
     }
 	
-    public ArrayList<customer> getAllCustomers()
+    public ArrayList<customerType> getAllCustomerTypes()
     {
         return miscWhere("");
     }
     
 	private String buildQuery(String wClause)
 	{
-	    String query="SELECT * FROM customer";
+	    String query="SELECT * FROM customerType";
 		
 		if (wClause.length()>0)
 			query=query+" WHERE "+ wClause;
@@ -30,10 +30,10 @@ public class DBcustomer implements IFDBcustomer {
 		return query;
 	}
 	
-	private ArrayList<customer> miscWhere(String wClause)
+	private ArrayList<customerType> miscWhere(String wClause)
 	{
         ResultSet results;
-	    ArrayList<customer> list = new ArrayList<customer>();	
+	    ArrayList<customerType> list = new ArrayList<customerType>();	
 		
 	    String query =  buildQuery(wClause);
   
@@ -44,9 +44,9 @@ public class DBcustomer implements IFDBcustomer {
 	 	
 	
 		while( results.next() ){
-			customer cusObj = new customer();
-			cusObj = buildCustomer(results);	
-            list.add(cusObj);	
+			customerType cTypeObj = new customerType();
+			cTypeObj = buildCustomerType(results);	
+            list.add(cTypeObj);	
 		}//end while
                  stmt.close();     			
 		}//slut try	
@@ -57,29 +57,26 @@ public class DBcustomer implements IFDBcustomer {
 		return list;
 	}
 	
-	private customer buildCustomer(ResultSet results)
+	private customerType buildCustomerType(ResultSet results)
     {  
-		customer cusObj = new customer();
+		customerType cTypeObj = new customerType();
         try
         { // the columns from the table ZipCode  are used
-        	cusObj.setId(results.getInt("id"));
-        	cusObj.setName(results.getString("name"));
-        	cusObj.setAddress(results.getString("address"));
-        	cusObj.setPhone(results.getInt("phone"));
-        	cusObj.setEmail(results.getString("email"));
-        	cusObj.setCustomerType(results.getInt("customerType"));
+        	cTypeObj.setId(results.getInt("id"));
+        	cTypeObj.setDiscount(results.getInt("discount"));
+        	cTypeObj.setTitle(results.getString(("title")));
         }
         catch(Exception e)
         {
-        	System.out.println("error in building the product object");
+        	System.out.println("error in building the Customer Type object");
         }
-        return cusObj;
+        return cTypeObj;
     }
 	    
-	private customer singleWhere(String wClause)
+	private customerType singleWhere(String wClause)
 	{
 		ResultSet results;
-		customer cusObj = new customer();
+		customerType cTypeObj = new customerType();
                 
 	    String query = buildQuery(wClause);
         //System.out.println(query);
@@ -92,31 +89,28 @@ public class DBcustomer implements IFDBcustomer {
 	 		
 	 		if( results.next() )
 	 		{
-	 			cusObj = buildCustomer(results);
+	 			cTypeObj = buildCustomerType(results);
 	            
 	            stmt.close();
 			}
             else
             { 	//no employee was found
-            	cusObj = null;
+            	cTypeObj = null;
             }
 		}//end try	
 	 	catch(Exception e)
 		{
 	 		System.out.println("Query exception: "+e);
 	 	}
-		return cusObj;
+		return cTypeObj;
 	}
 	
 	@Override
-    public customer insertCustomer(customer cus) throws Exception
+    public customerType insertCustomerType(customerType cType) throws Exception
     {
-		 String query="INSERT INTO customer(name, address, phone,email,customerType)  VALUES('"+
-				 cus.getName() + "','" +
-				 cus.getAddress() + "'," +
-				 cus.getPhone() + ",'" +
-				 cus.getEmail() + "'," +
-				 cus.getCustomerType()
+		 String query="INSERT INTO customerType(title, discount)  VALUES('"+
+				 cType.getTitle() + "'," +
+				 cType.getDiscount()
 				 + ")";
        //System.out.println("insert : " + query);
       try{ // insert new employee +  dependent
@@ -126,36 +120,27 @@ public class DBcustomer implements IFDBcustomer {
           stmt.close();
       }//end try
        catch(SQLException ex){
-          System.out.println("Customer ikke oprettet");
-          throw new Exception ("Customer is not inserted correct");
+          System.out.println("customerType ikke oprettet");
+          throw new Exception ("customerType is not inserted correct");
        }
-      customer cusObj = getLatest();
-      return cusObj;
+      customerType cTypeObj = getLatest();
+      return cTypeObj;
     }
 	
-	public customer getCustomer(int id)
+	public customerType getCustomerType(int id)
     {   String wClause = "  id = " + id;
         return singleWhere(wClause);
     }
 	
-	public customer findCustomerPhone(int phone)
-    {   String wClause = "  phone = " + phone;
-        return singleWhere(wClause);
-    }
-	
-	public int updateCustomer(customer cus)
+	public int updateCustomerType(customerType cType)
 	{
-		customer cusObj  = cus;
+		customerType cTypeObj  = cType;
 		int rc=-1;
 
-		String query="UPDATE customer SET "+
-		 	  "name ='"+ cusObj.getName()+"', "+
-		 	  "address ='"+ cusObj.getAddress() + "', " +
-                          "phone ="+ cusObj.getPhone() + ", " +
-                          "email ='"+ cusObj.getEmail() + "', " +
-                          "customerType ="+ cusObj.getCustomerType() + " " +
-		          " WHERE id = "+ cusObj.getId();
-                System.out.println("Update query:" + query);
+		String query="UPDATE customerType SET "+
+		 	  "title ='"+ cTypeObj.getTitle()+"', "+
+		 	  "discount ="+ cTypeObj.getDiscount() +
+		          " WHERE id = "+ cTypeObj.getId();
   		try{ // update employee
 	 		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);
@@ -169,12 +154,12 @@ public class DBcustomer implements IFDBcustomer {
 		return(rc);
 	}
 	
-	public customer getLatest()
+	public customerType getLatest()
 	{
 		ResultSet results;
-		customer cusObj = new customer();
+		customerType cTypeObj = new customerType();
                 
-	    String query = "SELECT TOP 1 * FROM customer ORDER BY id DESC;";
+	    String query = "SELECT TOP 1 * FROM customerType ORDER BY id DESC;";
         //System.out.println(query);
         
 		try
@@ -185,20 +170,20 @@ public class DBcustomer implements IFDBcustomer {
 	 		
 	 		if( results.next() )
 	 		{
-	 			cusObj = buildCustomer(results);
+	 			cTypeObj = buildCustomerType(results);
 	            
 	            stmt.close();
 			}
             else
             { 	//no employee was found
-            	cusObj = null;
+            	cTypeObj = null;
             }
 		}//end try	
 	 	catch(Exception e)
 		{
 	 		System.out.println("Query exception: "+e);
 	 	}
-		return cusObj;
+		return cTypeObj;
 	}
 	
 }
