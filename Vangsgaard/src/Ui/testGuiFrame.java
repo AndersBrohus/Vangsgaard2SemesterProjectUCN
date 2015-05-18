@@ -106,11 +106,24 @@ public class testGuiFrame extends JFrame {
 			        IFDBcustomer dbCus = new DBcustomer();
 			        dbCus.insertCustomer(cus);
 			        DbConnection.commitTransaction();
+			        
+			        JOptionPane.showMessageDialog(null,"En bruger er blevet oprettet!");
+			        
+			        clearTxtFields();
+			        list.clearSelection();
 		        }
 				catch(Exception e){
 					
 				}
 			}
 		});
+	}
+	public void clearTxtFields()
+	{
+		String t = "";
+		txtAdresse.setText(t);
+		txtEmail.setText(t);
+		txtNavn.setText(t);
+		txtTelefon.setText(t);
 	}
 }
