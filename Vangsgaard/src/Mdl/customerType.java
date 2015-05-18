@@ -52,5 +52,9 @@ public class customerType {
 		this.discount = discount;
 	}
 	
-	
+	public String toString()
+    { 
+		String print = "Title: " + title + " Rabat: " + discount;
+		return print;
+	}
 }

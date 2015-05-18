@@ -41,5 +41,8 @@ public class department {
 		this.departmentName = departmentName;
 	}
 	
+    public String toString()
+    { return departmentName; }
+	
 	
 }
