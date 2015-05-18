@@ -7,6 +7,9 @@ public class color {
 		this.id = id;
 		this.color = color;
 	}
+	
+	public color() {
+	}
 	/**
 	 * @return the id
 	 */

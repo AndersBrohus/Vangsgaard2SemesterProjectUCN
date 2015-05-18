@@ -11,6 +11,10 @@ public class supplier {
 		this.phone = phone;
 	}
 
+	public supplier() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * @return the id
 	 */

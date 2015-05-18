@@ -4,14 +4,18 @@ public class sizes {
 	private int id;
 	private String size;
 	private String type;
-	private customer customer;
+	private int customerId;
 	
-	public sizes(int id, String size, String type, Mdl.customer customer) {
+	public sizes(int id, String size, String type, int customerId) {
 		super();
 		this.id = id;
 		this.size = size;
 		this.type = type;
-		this.customer = customer;
+		this.customerId = customerId;
+	}
+
+	public sizes() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -57,18 +61,20 @@ public class sizes {
 	}
 
 	/**
-	 * @return the customer
+	 * @return the customerId
 	 */
-	public customer getCustomer() {
-		return customer;
+	public int getCustomerId() {
+		return customerId;
 	}
 
 	/**
-	 * @param customer the customer to set
+	 * @param customerId the customerId to set
 	 */
-	public void setCustomer(customer customer) {
-		this.customer = customer;
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
+
+
 	
 	
 	
