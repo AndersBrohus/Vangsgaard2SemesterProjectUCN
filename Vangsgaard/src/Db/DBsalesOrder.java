@@ -8,21 +8,21 @@ import java.util.ArrayList;
 
 import Mdl.*;
 
-public class DBstock implements IFDBstock {
+public class DBsalesOrder implements IFDBsalesOrder {
 	private  Connection con;
     /** Creates a new instance of DBZipCodes */
-    public DBstock() {
+    public DBsalesOrder() {
       con = DbConnection.getInstance().getDBcon();
     }
 	
-    public ArrayList<stock> getAllStocks()
+    public ArrayList<salesOrder> getAllSalesOrders()
     {
         return miscWhere("");
     }
     
 	private String buildQuery(String wClause)
 	{
-	    String query="SELECT * FROM stock";
+	    String query="SELECT * FROM salesOrder";
 		
 		if (wClause.length()>0)
 			query=query+" WHERE "+ wClause;
@@ -30,10 +30,10 @@ public class DBstock implements IFDBstock {
 		return query;
 	}
 	
-	private ArrayList<stock> miscWhere(String wClause)
+	private ArrayList<salesOrder> miscWhere(String wClause)
 	{
         ResultSet results;
-	    ArrayList<stock> list = new ArrayList<stock>();	
+	    ArrayList<salesOrder> list = new ArrayList<salesOrder>();	
 		
 	    String query =  buildQuery(wClause);
   
@@ -44,9 +44,9 @@ public class DBstock implements IFDBstock {
 	 	
 	
 		while( results.next() ){
-			stock stoObj = new stock();
-			stoObj = buildStock(results);	
-            list.add(stoObj);	
+			salesOrder sOrdObj = new salesOrder();
+			sOrdObj = buildSalesOrder(results);	
+            list.add(sOrdObj);	
 		}//end while
                  stmt.close();     			
 		}//slut try	
@@ -57,27 +57,30 @@ public class DBstock implements IFDBstock {
 		return list;
 	}
 	
-	private stock buildStock(ResultSet results)
+	private salesOrder buildSalesOrder(ResultSet results)
     {  
-		stock stoObj = new stock();
+		salesOrder sOrdObj = new salesOrder();
         try
         { // the columns from the table ZipCode  are used
-        	stoObj.setId(results.getInt("id"));
-        	stoObj.setAmount(results.getInt("amount"));
-        	stoObj.setDepartmentId(results.getInt("departmentId"));
-        	stoObj.setProductId(results.getInt("productId"));
+        	sOrdObj.setId(results.getInt("id"));
+        	sOrdObj.setAmount(results.getInt("amount"));
+        	sOrdObj.setCustomerId(results.getInt("customerId"));
+        	sOrdObj.setDate(results.getString("date"));
+        	sOrdObj.setDeliveryDate(results.getString("deliveryDate"));
+        	sOrdObj.setDeliveryStatus(results.getBoolean("deliveryStatus"));
+        	sOrdObj.setInvoiceId(results.getInt("invoiceNo"));
         }
         catch(Exception e)
         {
-        	System.out.println("error in building the stock object");
+        	System.out.println("error in building the Sales Order object");
         }
-        return stoObj;
+        return sOrdObj;
     }
 	    
-	private stock singleWhere(String wClause)
+	private salesOrder singleWhere(String wClause)
 	{
 		ResultSet results;
-		stock stoObj = new stock();
+		salesOrder sOrdObj = new salesOrder();
                 
 	    String query = buildQuery(wClause);
         //System.out.println(query);
@@ -90,30 +93,42 @@ public class DBstock implements IFDBstock {
 	 		
 	 		if( results.next() )
 	 		{
-	 			stoObj = buildStock(results);
+	 			sOrdObj = buildSalesOrder(results);
 	            
 	            stmt.close();
 			}
             else
             { 	//no employee was found
-            	stoObj = null;
+            	sOrdObj = null;
             }
 		}//end try	
 	 	catch(Exception e)
 		{
 	 		System.out.println("Query exception: "+e);
 	 	}
-		return stoObj;
+		return sOrdObj;
 	}
 	
-	@Override
-    public stock insertStock(stock sto) throws Exception
+	public ArrayList<salesOrder> findAllSalesOrdersByCustomer(int phone)
     {
-		 String query="INSERT INTO stock(productId, amount, departmentId)  VALUES("+
-				 sto.getProductId() + "," +
-				 sto.getAmount() + "," +
-				 sto.getDepartmentId()
-				 + ")";
+		DBcustomer dbCus = new DBcustomer();
+		customer cus = dbCus.findCustomerPhone(phone);
+		String wClause = " customerId = " + cus.getId();
+        return miscWhere(wClause);
+    }
+	
+	@Override
+    public salesOrder insertSalesOrder(salesOrder sOrd) throws Exception
+    {
+		int deliveryStatus = (sOrd.isDeliveryStatus()) ? 1 : 0;
+		 String query="INSERT INTO salesOrder(date, amount,deliveryStatus,deliveryDate,customerId,invoiceNo)  VALUES('"+
+				 sOrd.getDate() + "'," +
+				 sOrd.getAmount() + "," +
+				 deliveryStatus + ",'" + 
+				 sOrd.getDeliveryDate() + "'," +
+				 sOrd.getCustomerId() + "," +
+				 sOrd.getInvoiceId()
+ 				 + ")";
        //System.out.println("insert : " + query);
       try{ // insert new employee +  dependent
           Statement stmt = con.createStatement();
@@ -122,28 +137,31 @@ public class DBstock implements IFDBstock {
           stmt.close();
       }//end try
        catch(SQLException ex){
-          System.out.println("Size ikke oprettet");
-          throw new Exception ("Size is not inserted correct");
+          //System.out.println("Supplier ikke oprettet");
+          throw new Exception ("SalesOrder is not inserted correct");
        }
-      stock stoObj = getLatest();
-      return stoObj;
+      salesOrder sOrdObj = getLatest();
+      return sOrdObj;
     }
 	
-	public stock getStock(int id)
+	public salesOrder getSalesOrder(int id)
     {   String wClause = "  id = " + id;
         return singleWhere(wClause);
     }
 	
-	public int updateStock(stock sto)
+	public int updateSalesOrder(salesOrder sOrd)
 	{
-		stock stoObj  = sto;
+		salesOrder sOrdObj  = sOrd;
 		int rc=-1;
-
-		String query="UPDATE stock SET "+
-		 	  "productId ="+ stoObj.getProductId()+", "+
-		 	  "amount ="+ stoObj.getAmount() + "," +
-		 	  "departmentId =" + stoObj.getDepartmentId() +
-		          " WHERE id = "+ stoObj.getId();
+		int deliveryStatus = (sOrd.isDeliveryStatus()) ? 1 : 0;
+		String query="UPDATE salesOrder SET "+
+		 	  "date ='"+ sOrdObj.getDate()+"', "+
+		 	  "amount ="+ sOrdObj.getAmount() + ", " +
+		 	  "deliveryStatus ="+ deliveryStatus + ", " +
+		 	  "deliveryDate ='"+ sOrdObj.getDeliveryDate()+"', "+
+		 	  "customerId ="+ sOrdObj.getCustomerId() + ", " +
+		 	  "invoiceNo ="+ sOrdObj.getInvoiceId() +
+		          " WHERE id = "+ sOrdObj.getId();
   		try{ // update employee
 	 		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);
@@ -152,17 +170,18 @@ public class DBstock implements IFDBstock {
 	 	 	stmt.close();
 		}//slut try
 	 	catch(Exception ex){
+	 		System.out.println(query);
 	 	 	System.out.println("Update exception in employee db: "+ex);
 	  	}
 		return(rc);
 	}
 	
-	public stock getLatest()
+	public salesOrder getLatest()
 	{
 		ResultSet results;
-		stock stoObj = new stock();
+		salesOrder sOrdObj = new salesOrder();
                 
-	    String query = "SELECT TOP 1 * FROM stock ORDER BY id DESC;";
+	    String query = "SELECT TOP 1 * FROM salesOrder ORDER BY id DESC;";
         //System.out.println(query);
         
 		try
@@ -173,20 +192,20 @@ public class DBstock implements IFDBstock {
 	 		
 	 		if( results.next() )
 	 		{
-	 			stoObj = buildStock(results);
+	 			sOrdObj = buildSalesOrder(results);
 	            
 	            stmt.close();
 			}
             else
             { 	//no employee was found
-            	stoObj = null;
+            	sOrdObj = null;
             }
 		}//end try	
 	 	catch(Exception e)
 		{
 	 		System.out.println("Query exception: "+e);
 	 	}
-		return stoObj;
+		return sOrdObj;
 	}
 	
 }

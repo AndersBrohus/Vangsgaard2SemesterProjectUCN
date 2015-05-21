@@ -7,22 +7,25 @@ public class product {
 	private int price;
 	private int supplierId;
 	private int stockId;
-	private color color;	
+	private int colorId;	
 	private String type;
+	
+	
 
-	
-	
 	public product(int id, String name, String size, int price, int supplierId,
-			int stockId, color color, String type) {
-		super();
+			int stockId, int colorId, String type) {
 		this.id = id;
 		this.name = name;
 		this.size = size;
 		this.price = price;
 		this.supplierId = supplierId;
 		this.stockId = stockId;
-		this.color = color;
+		this.colorId = colorId;
 		this.type = type;
+	}
+
+	public product() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -123,17 +126,13 @@ public class product {
 		this.type = type;
 	}
 
-	/**
-	 * @return the color
-	 */
-	public color getColor() {
-		return color;
+	public int getColorId() {
+		return colorId;
 	}
 
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(color color) {
-		this.color = color;
+	public void setColorId(int colorId) {
+		this.colorId = colorId;
 	}
+	
+	
 }

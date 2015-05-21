@@ -8,21 +8,21 @@ import java.util.ArrayList;
 
 import Mdl.*;
 
-public class DBstock implements IFDBstock {
+public class DBproduct implements IFDBproduct {
 	private  Connection con;
     /** Creates a new instance of DBZipCodes */
-    public DBstock() {
+    public DBproduct() {
       con = DbConnection.getInstance().getDBcon();
     }
 	
-    public ArrayList<stock> getAllStocks()
+    public ArrayList<product> getAllProducts()
     {
         return miscWhere("");
     }
     
 	private String buildQuery(String wClause)
 	{
-	    String query="SELECT * FROM stock";
+	    String query="SELECT * FROM product";
 		
 		if (wClause.length()>0)
 			query=query+" WHERE "+ wClause;
@@ -30,10 +30,10 @@ public class DBstock implements IFDBstock {
 		return query;
 	}
 	
-	private ArrayList<stock> miscWhere(String wClause)
+	private ArrayList<product> miscWhere(String wClause)
 	{
         ResultSet results;
-	    ArrayList<stock> list = new ArrayList<stock>();	
+	    ArrayList<product> list = new ArrayList<product>();	
 		
 	    String query =  buildQuery(wClause);
   
@@ -44,9 +44,9 @@ public class DBstock implements IFDBstock {
 	 	
 	
 		while( results.next() ){
-			stock stoObj = new stock();
-			stoObj = buildStock(results);	
-            list.add(stoObj);	
+			product proObj = new product();
+			proObj = buildProduct(results);	
+            list.add(proObj);	
 		}//end while
                  stmt.close();     			
 		}//slut try	
@@ -57,27 +57,33 @@ public class DBstock implements IFDBstock {
 		return list;
 	}
 	
-	private stock buildStock(ResultSet results)
+	private product buildProduct(ResultSet results)
     {  
-		stock stoObj = new stock();
+		product proObj = new product();
         try
         { // the columns from the table ZipCode  are used
-        	stoObj.setId(results.getInt("id"));
-        	stoObj.setAmount(results.getInt("amount"));
-        	stoObj.setDepartmentId(results.getInt("departmentId"));
-        	stoObj.setProductId(results.getInt("productId"));
+        	proObj.setId(results.getInt("id"));
+        	proObj.setPrice(results.getInt("purchasePrice"));
+        	proObj.setStockId(results.getInt("stockId"));
+        	proObj.setSupplierId(results.getInt("supplierId"));
+        	proObj.setColorId(results.getInt("clothingColor"));
+        	proObj.setName(results.getString("name"));
+        	proObj.setSize(results.getString("clothingSize"));
+        	proObj.setType(results.getString("type"));
+        	
+        	
         }
         catch(Exception e)
         {
-        	System.out.println("error in building the stock object");
+        	System.out.println("error in building the product object");
         }
-        return stoObj;
+        return proObj;
     }
 	    
-	private stock singleWhere(String wClause)
+	private product singleWhere(String wClause)
 	{
 		ResultSet results;
-		stock stoObj = new stock();
+		product proObj = new product();
                 
 	    String query = buildQuery(wClause);
         //System.out.println(query);
@@ -90,30 +96,34 @@ public class DBstock implements IFDBstock {
 	 		
 	 		if( results.next() )
 	 		{
-	 			stoObj = buildStock(results);
+	 			proObj = buildProduct(results);
 	            
 	            stmt.close();
 			}
             else
             { 	//no employee was found
-            	stoObj = null;
+            	proObj = null;
             }
 		}//end try	
 	 	catch(Exception e)
 		{
 	 		System.out.println("Query exception: "+e);
 	 	}
-		return stoObj;
+		return proObj;
 	}
 	
 	@Override
-    public stock insertStock(stock sto) throws Exception
+    public product insertProduct(product pro) throws Exception
     {
-		 String query="INSERT INTO stock(productId, amount, departmentId)  VALUES("+
-				 sto.getProductId() + "," +
-				 sto.getAmount() + "," +
-				 sto.getDepartmentId()
-				 + ")";
+		 String query="INSERT INTO product(name, purchasePrice,stockId,supplierId,type,clothingSize,clothingColor)  VALUES('"+
+				 pro.getName() + "'," +
+				 pro.getPrice() + "," +
+				 pro.getStockId() + "," + 
+				 pro.getSupplierId() + ",'" +
+				 pro.getType() + "','" +
+				 pro.getSize() + "', " +
+				 pro.getColorId()
+ 				 + ")";
        //System.out.println("insert : " + query);
       try{ // insert new employee +  dependent
           Statement stmt = con.createStatement();
@@ -122,28 +132,32 @@ public class DBstock implements IFDBstock {
           stmt.close();
       }//end try
        catch(SQLException ex){
-          System.out.println("Size ikke oprettet");
-          throw new Exception ("Size is not inserted correct");
+          System.out.println(query);
+          throw new Exception ("SalesOrder is not inserted correct");
        }
-      stock stoObj = getLatest();
-      return stoObj;
+      product proObj = getLatest();
+      return proObj;
     }
 	
-	public stock getStock(int id)
+	public product getProduct(int id)
     {   String wClause = "  id = " + id;
         return singleWhere(wClause);
     }
 	
-	public int updateStock(stock sto)
+	public int updateProduct(product pro)
 	{
-		stock stoObj  = sto;
+		product proObj  = pro;
 		int rc=-1;
 
-		String query="UPDATE stock SET "+
-		 	  "productId ="+ stoObj.getProductId()+", "+
-		 	  "amount ="+ stoObj.getAmount() + "," +
-		 	  "departmentId =" + stoObj.getDepartmentId() +
-		          " WHERE id = "+ stoObj.getId();
+		String query="UPDATE product SET "+
+		 	  "name ='"+ proObj.getName()+"', "+
+		 	  "purchasePrice ="+ proObj.getPrice() + "," +
+		 	  "stockId ="+ proObj.getStockId() + "," +
+		 	  "supplierId ="+ proObj.getSupplierId()+","+
+		 	  "type ='"+ proObj.getType() + "'," +
+		 	  "clothingSize ='"+ proObj.getSize() + "'," +
+		 	  "clothingColor =" + proObj.getColorId() +
+		          " WHERE id = "+ proObj.getId();
   		try{ // update employee
 	 		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);
@@ -152,17 +166,18 @@ public class DBstock implements IFDBstock {
 	 	 	stmt.close();
 		}//slut try
 	 	catch(Exception ex){
+	 		System.out.println(query);
 	 	 	System.out.println("Update exception in employee db: "+ex);
 	  	}
 		return(rc);
 	}
 	
-	public stock getLatest()
+	public product getLatest()
 	{
 		ResultSet results;
-		stock stoObj = new stock();
+		product proObj = new product();
                 
-	    String query = "SELECT TOP 1 * FROM stock ORDER BY id DESC;";
+	    String query = "SELECT TOP 1 * FROM product ORDER BY id DESC;";
         //System.out.println(query);
         
 		try
@@ -173,20 +188,20 @@ public class DBstock implements IFDBstock {
 	 		
 	 		if( results.next() )
 	 		{
-	 			stoObj = buildStock(results);
+	 			proObj = buildProduct(results);
 	            
 	            stmt.close();
 			}
             else
             { 	//no employee was found
-            	stoObj = null;
+            	proObj = null;
             }
 		}//end try	
 	 	catch(Exception e)
 		{
 	 		System.out.println("Query exception: "+e);
 	 	}
-		return stoObj;
+		return proObj;
 	}
 	
 }

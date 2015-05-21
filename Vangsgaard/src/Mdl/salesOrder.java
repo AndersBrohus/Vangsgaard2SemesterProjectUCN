@@ -6,20 +6,26 @@ public class salesOrder {
 	private int amount;
 	private boolean deliveryStatus;
 	private String deliveryDate;
-	private customer customer;
-	private invoice invoice;
+	private int customerId;
+	private int invoiceId;
 	
+
+
 	public salesOrder(int id, String date, int amount, boolean deliveryStatus,
-			String deliveryDate, Mdl.customer customer, Mdl.invoice invoice) {
+			String deliveryDate, int customerId, int invoiceId) {
 		this.id = id;
 		this.date = date;
 		this.amount = amount;
 		this.deliveryStatus = deliveryStatus;
 		this.deliveryDate = deliveryDate;
-		this.customer = customer;
-		this.invoice = invoice;
+		this.customerId = customerId;
+		this.invoiceId = invoiceId;
 	}
-	
+
+	public salesOrder() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * @return the id
 	 */
@@ -80,30 +86,20 @@ public class salesOrder {
 	public void setDeliveryDate(String deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
-	/**
-	 * @return the customer
-	 */
-	public customer getCustomer() {
-		return customer;
-	}
-	/**
-	 * @param customer the customer to set
-	 */
-	public void setCustomer(customer customer) {
-		this.customer = customer;
-	}
-	/**
-	 * @return the invoice
-	 */
-	public invoice getInvoice() {
-		return invoice;
-	}
-	/**
-	 * @param invoice the invoice to set
-	 */
-	public void setInvoice(invoice invoice) {
-		this.invoice = invoice;
-	}
 	
-	
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
+	public int getInvoiceId() {
+		return invoiceId;
+	}
+
+	public void setInvoiceId(int invoiceId) {
+		this.invoiceId = invoiceId;
+	}
 }

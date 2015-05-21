@@ -2,19 +2,23 @@ package Mdl;
 
 public class partOrder {
 	private int id;
-	private product product;
-	private salesOrder salesOrder;
+	private int productId;
+	private int salesOrderId;
 	private int amount;
-	private department departmentId;
-	
-	public partOrder(int id, Mdl.product product, Mdl.salesOrder salesOrder,
-			int amount, department departmentId) {
+	private int departmentId;
+
+	public partOrder(int id, int productId, int salesOrderId, int amount,
+			int departmentId) {
 		super();
 		this.id = id;
-		this.product = product;
-		this.salesOrder = salesOrder;
+		this.productId = productId;
+		this.salesOrderId = salesOrderId;
 		this.amount = amount;
 		this.departmentId = departmentId;
+	}
+
+	public partOrder() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -32,34 +36,6 @@ public class partOrder {
 	}
 
 	/**
-	 * @return the product
-	 */
-	public product getProduct() {
-		return product;
-	}
-
-	/**
-	 * @param product the product to set
-	 */
-	public void setProduct(product product) {
-		this.product = product;
-	}
-
-	/**
-	 * @return the salesOrder
-	 */
-	public salesOrder getSalesOrder() {
-		return salesOrder;
-	}
-
-	/**
-	 * @param salesOrder the salesOrder to set
-	 */
-	public void setSalesOrder(salesOrder salesOrder) {
-		this.salesOrder = salesOrder;
-	}
-
-	/**
 	 * @return the amount
 	 */
 	public int getAmount() {
@@ -73,17 +49,29 @@ public class partOrder {
 		this.amount = amount;
 	}
 
-	/**
-	 * @return the departmentId
-	 */
-	public department getDepartmentId() {
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public int getSalesOrderId() {
+		return salesOrderId;
+	}
+
+	public void setSalesOrderId(int salesOrderId) {
+		this.salesOrderId = salesOrderId;
+	}
+
+	public int getDepartmentId() {
 		return departmentId;
 	}
 
-	/**
-	 * @param departmentId the departmentId to set
-	 */
-	public void setDepartmentId(department departmentId) {
+	public void setDepartmentId(int departmentId) {
 		this.departmentId = departmentId;
 	}
+
+	
 }
