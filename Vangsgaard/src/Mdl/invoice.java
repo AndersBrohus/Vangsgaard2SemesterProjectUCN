@@ -12,6 +12,10 @@ public class invoice {
 		this.amount = amount;
 	}
 
+	public invoice() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * @return the invoiceNo
 	 */
