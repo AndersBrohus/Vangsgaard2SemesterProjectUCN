@@ -54,7 +54,7 @@ public class customerType {
 	
 	public String toString()
     { 
-		String print = "Title: " + title + " Rabat: " + discount;
+		String print = "Title: " + title + " ---- Rabat: " + discount + "%";
 		return print;
 	}
 }

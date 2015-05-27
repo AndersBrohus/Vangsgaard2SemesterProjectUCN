@@ -74,7 +74,11 @@ public class sizes {
 		this.customerId = customerId;
 	}
 
-
+	public String toString()
+    { 
+		String print = "Størrelse: " + size + " ---- Type: " + type;
+		return print;
+	}
 	
 	
 	
