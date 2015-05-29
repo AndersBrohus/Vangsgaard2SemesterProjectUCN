@@ -35,5 +35,10 @@ public class color {
 		this.color = color;
 	}
 	
+	public String toString()
+    { 
+		String print = "Farve: " + color;
+		return print;
+	}
 	
 }

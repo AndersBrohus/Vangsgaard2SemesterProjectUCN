@@ -57,6 +57,11 @@ public class supplier {
 		this.phone = phone;
 	}
 	
+	public String toString()
+    { 
+		String print = "Navn: " + name + " - Telefon: " + phone;
+		return print;
+	}
 	
 	
 	
