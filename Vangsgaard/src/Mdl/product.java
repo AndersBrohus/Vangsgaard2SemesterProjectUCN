@@ -134,5 +134,10 @@ public class product {
 		this.colorId = colorId;
 	}
 	
+	public String toString()
+    { 
+		String print = "Navn: " + name + " - Pris: " + price;
+		return print;
+	}
 	
 }
