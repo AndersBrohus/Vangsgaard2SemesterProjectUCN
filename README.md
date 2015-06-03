@@ -1,4 +1,4 @@
-# 1. ÅRSPROJEKT - Vangsgaard
+# 1. ÅRSPROJEKT - Vangsgaard ApS
 
 ![Happy shark](http://i.imgur.com/qdyvNyN.gif)
 
