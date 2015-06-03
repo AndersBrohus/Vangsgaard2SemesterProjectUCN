@@ -1,5 +1,5 @@
-# 2. Semester Projekt UCN - Vangsgaard
+# 1. ÅRSPROJEKT - Vangsgaard
 
 ![Happy shark](http://i.imgur.com/qdyvNyN.gif)
 
-Af Anders Brohus, Mauran Muthiah & Mike Pryssing!
+Af Anders Brohus, Mauran Muthiah & Mike Pryssing
