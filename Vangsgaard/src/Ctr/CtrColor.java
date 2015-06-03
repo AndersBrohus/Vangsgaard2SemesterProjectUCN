@@ -9,6 +9,8 @@ public class CtrColor {
 	public CtrColor() {
         
     }
+    
+    
     public ArrayList<color> findAllColors()
     {
       IFDBcolor dbColor= new DBcolor();
@@ -16,18 +18,25 @@ public class CtrColor {
       allCol = dbColor.getAllColors();
       return allCol;
     }
+    
+    
+    
     public color getColor(int id)
     {
         IFDBcolor dbColor= new DBcolor();
         return dbColor.getColor(id);
     }
     
+    
+    
     public color getLatest()
     {
         IFDBcolor dbColor= new DBcolor();
         return dbColor.getLatest();
     }
-	  public int updateColor (int id,String name)
+
+
+    public int updateColor (int id,String name)
 	  {
 	      IFDBcolor dbColor= new DBcolor();
 	      color col = dbColor.getColor(id);
@@ -36,6 +45,8 @@ public class CtrColor {
 	      colObj.setColor(name);
 	      return  dbColor.updateColor(colObj);
 	  }
+  
+  
       
       public void insertNew(String name) throws Exception
       {    
