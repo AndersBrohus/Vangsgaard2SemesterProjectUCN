@@ -31,16 +31,16 @@ public class CtrInvoice {
         return dbInv.getLatest();
     }
 	
-	public void insertNew(String date, int amount) throws Exception
+	public int insertNew(String date, double amount) throws Exception
     {    
 		invoice invObj = new invoice();
 		invObj.setAmount(amount);
 		invObj.setPaymentDate(date);
-  
+		int test = 0;
 		try{
 	        DbConnection.startTransaction();
 		    IFDBinvoice dbInv = new DBinvoice();
-	        dbInv.insertInvoice(invObj);
+		    test = dbInv.insertInvoice(invObj);
 	        DbConnection.commitTransaction();
         }
         catch(Exception e)
@@ -48,6 +48,7 @@ public class CtrInvoice {
         	DbConnection.rollbackTransaction();
             throw new Exception("CustomerType not inserted");
         }
+		return test;
     }
 	
 	public int updateSize(int invoiceNo, int amount, String date)

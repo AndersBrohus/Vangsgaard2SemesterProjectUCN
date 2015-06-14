@@ -144,6 +144,32 @@ public class DBsalesOrder implements IFDBsalesOrder {
       return sOrdObj;
     }
 	
+    public int insertSalesOrderWithId(salesOrder sOrd) throws Exception
+    {
+		int deliveryStatus = (sOrd.isDeliveryStatus()) ? 1 : 0;
+		 String query="INSERT INTO salesOrder(date, amount,deliveryStatus,deliveryDate,customerId,invoiceNo)  VALUES('"+
+				 sOrd.getDate() + "'," +
+				 sOrd.getAmount() + "," +
+				 deliveryStatus + ",'" + 
+				 sOrd.getDeliveryDate() + "'," +
+				 sOrd.getCustomerId() + "," +
+				 sOrd.getInvoiceId()
+ 				 + ")";
+       //System.out.println("insert : " + query);
+      try{ // insert new employee +  dependent
+          Statement stmt = con.createStatement();
+          stmt.setQueryTimeout(5);
+     	  stmt.executeUpdate(query);
+          stmt.close();
+      }//end try
+       catch(SQLException ex){
+          //System.out.println("Supplier ikke oprettet");
+          throw new Exception ("SalesOrder is not inserted correct");
+       }
+      int sOrdId = getLatest().getId();
+      return sOrdId;
+    }
+	
 	public salesOrder getSalesOrder(int id)
     {   String wClause = "  id = " + id;
         return singleWhere(wClause);

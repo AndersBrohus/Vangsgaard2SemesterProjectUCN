@@ -106,7 +106,7 @@ public class DBinvoice implements IFDBinvoice {
 	}
 	
 	@Override
-    public invoice insertInvoice(invoice inv) throws Exception
+    public int insertInvoice(invoice inv) throws Exception
     {
 		 String query="INSERT INTO invoice(paymentDate, amount)  VALUES('"+
 				 inv.getPaymentDate() + "'," +
@@ -123,8 +123,8 @@ public class DBinvoice implements IFDBinvoice {
           System.out.println("Size ikke oprettet");
           throw new Exception ("Size is not inserted correct");
        }
-      invoice invObj = getLatest();
-      return invObj;
+      int sOrdId = getLatest().getInvoiceNo();
+      return sOrdId;
     }
 	
 	public invoice getInvoice(int id)
@@ -141,7 +141,7 @@ public class DBinvoice implements IFDBinvoice {
 		String query="UPDATE invoice SET "+
 		 	  "paymentDate ='"+ invObj.getPaymentDate() +"', "+
 		 	  "amount =" + invObj.getAmount() +
-		          " WHERE invoiceNo = "+ invObj.getInvoiceNo();
+		          " WHERE id = "+ invObj.getInvoiceNo();
   		try{ // update employee
 	 		Statement stmt = con.createStatement();
 	 		stmt.setQueryTimeout(5);

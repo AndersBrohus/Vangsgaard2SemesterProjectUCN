@@ -3,7 +3,7 @@ package Mdl;
 public class salesOrder {
 	private int id;
 	private String date;
-	private int amount;
+	private double amount;
 	private boolean deliveryStatus;
 	private String deliveryDate;
 	private int customerId;
@@ -11,7 +11,7 @@ public class salesOrder {
 	
 
 
-	public salesOrder(int id, String date, int amount, boolean deliveryStatus,
+	public salesOrder(int id, String date, double amount, boolean deliveryStatus,
 			String deliveryDate, int customerId, int invoiceId) {
 		this.id = id;
 		this.date = date;
@@ -53,13 +53,13 @@ public class salesOrder {
 	/**
 	 * @return the amount
 	 */
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 	/**
 	 * @param amount the amount to set
 	 */
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	/**

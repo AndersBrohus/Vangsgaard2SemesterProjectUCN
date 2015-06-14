@@ -3,9 +3,9 @@ package Mdl;
 public class invoice {
 	private int invoiceNo;
 	private String paymentDate;
-	private int amount;
+	private double amount;
 	
-	public invoice(int invoiceNo, String paymentDate, int amount) {
+	public invoice(int invoiceNo, String paymentDate, double amount) {
 		super();
 		this.invoiceNo = invoiceNo;
 		this.paymentDate = paymentDate;
@@ -47,14 +47,14 @@ public class invoice {
 	/**
 	 * @return the amount
 	 */
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
 	/**
 	 * @param amount the amount to set
 	 */
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	

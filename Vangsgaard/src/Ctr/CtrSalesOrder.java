@@ -33,7 +33,7 @@ public class CtrSalesOrder {
         IFDBsalesOrder dbSOrd= new DBsalesOrder();
         return dbSOrd.getLatest();
     }
-	  public int updateSalesOrder(int id,int amount, int customerId, int invoiceNo, String date,String deliveryDate, boolean deliveryStatus)
+	  public int updateSalesOrder(int id,double amount, int customerId, int invoiceNo, String date,String deliveryDate, boolean deliveryStatus)
 	  {
 	      IFDBsalesOrder dbSOrd= new DBsalesOrder();
 	      salesOrder sOrd = dbSOrd.getSalesOrder(id);
@@ -70,4 +70,29 @@ public class CtrSalesOrder {
                throw new Exception("Customer not inserted");
            }
       }
+      
+      public int insertOrder(int customerId, String date,String deliveryDate, boolean deliveryStatus) throws Exception
+      {    
+	      salesOrder sOrdObj = new salesOrder();
+ 	      sOrdObj.setCustomerId(customerId);
+ 	      sOrdObj.setDate(date);
+ 	      sOrdObj.setDeliveryDate(deliveryDate);
+ 	      sOrdObj.setDeliveryStatus(deliveryStatus);
+ 	      sOrdObj.setInvoiceId(1);
+ 	      int test = 0;
+           try{
+            DbConnection.startTransaction();
+            IFDBsalesOrder dbSOrd= new DBsalesOrder();
+            test = dbSOrd.insertSalesOrderWithId(sOrdObj);
+            DbConnection.commitTransaction();
+           }
+           catch(Exception e)
+           {
+               DbConnection.rollbackTransaction();
+               throw new Exception("Customer not inserted");
+           }
+           
+           return test;
+      }
+
 }

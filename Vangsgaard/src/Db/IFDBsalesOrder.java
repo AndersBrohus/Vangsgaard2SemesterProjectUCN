@@ -17,4 +17,6 @@ public interface IFDBsalesOrder {
     public int updateSalesOrder(salesOrder sOrd);
     public salesOrder getLatest();
 
+	public int insertSalesOrderWithId(salesOrder sOrdObj) throws Exception;
+
 }
